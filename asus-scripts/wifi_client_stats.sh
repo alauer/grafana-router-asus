@@ -3,10 +3,10 @@
 [ -z "$(nvram get odmpid)" ] && ROUTER_MODEL=$(nvram get productid) || ROUTER_MODEL=$(nvram get odmpid)   # "nvram get odmpid" doesn't return value on RT-AX86U 
 readonly SCRIPT_NAME="wifi_client_stats"
 readonly DATA_TEMP_FILE=""
-readonly DB_URL=""
-readonly DB_ORG=""
-readonly DB_BUCKET=""
-readonly DB_TOKEN=""
+readonly DB_URL="192.168.11.2:49837"
+readonly DB_ORG="Homelab"
+readonly DB_BUCKET="telegraf"
+readonly DB_TOKEN="efe7103e4f314177971bbe991d5d6570"
 
 
 wifi_client_stats()
@@ -88,8 +88,8 @@ wifi_client_stats()
 
             #echo $data >> $DATA_TEMP_FILE   #debug
             #echo $data   #debug
-            #curl -is -XPOST "https://${DB_URL}/write?db=${DB_NAME}&u=${USER}&p=${PASS}" --data-binary "$data"  > /dev/null   #InfluxDB 1.x
-            curl --insecure --request POST "https://${DB_URL}:8086/api/v2/write?org=${DB_ORG}&bucket=${DB_BUCKET}&precision=s" --header "Authorization: Token ${DB_TOKEN}" --data-raw "$data" #> /dev/null
+            #curl -is -XPOST "http://${DB_URL}/write?db=${DB_NAME}&u=${USER}&p=${PASS}" --data-binary "$data"  > /dev/null   #InfluxDB 1.x
+            curl --insecure --request POST "http://${DB_URL}/api/v2/write?org=${DB_ORG}&bucket=${DB_BUCKET}&precision=s" --header "Authorization: Token ${DB_TOKEN}" --data-raw "$data" #> /dev/null
         done;
   done;
 }
